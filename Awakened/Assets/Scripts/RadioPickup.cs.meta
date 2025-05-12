@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: ca65fc1aa617be74ebdea80e95ecb6d4
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - radioUIIcon: {fileID: 4805730356193617720, guid: 5b9ab9677cc01ac42b719f6dad9d5bb5, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
