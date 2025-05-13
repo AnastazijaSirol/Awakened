@@ -55,7 +55,7 @@ public class ButtonMenu : MonoBehaviour
         button2.gameObject.SetActive(showButtons);
         button3.gameObject.SetActive(showButtons);
 
-        // NOVO: Prikazivanje/sakrivanje dodatnih UI elemenata
+        // Prikazivanje/sakrivanje dodatnih UI elemenata
         if (buttonCommands != null) buttonCommands.SetActive(showButtons);
         if (musicText != null) musicText.gameObject.SetActive(showButtons);
         if (musicSlider != null) musicSlider.gameObject.SetActive(showButtons);

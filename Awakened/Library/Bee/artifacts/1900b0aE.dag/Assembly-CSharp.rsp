@@ -416,6 +416,7 @@
 "Assets/Scripts/UIElements/ButtonReset.cs"
 "Assets/Scripts/UIElements/MusicVolumeController.cs"
 "Assets/Scripts/UIElements/UIAnimatorResseter.cs"
+"Assets/TeKniKo_Free/Power_Ups/Scripts/ObjectBounce.cs"
 "Assets/TextMesh Pro/Examples & Extras/Scripts/Benchmark01.cs"
 "Assets/TextMesh Pro/Examples & Extras/Scripts/Benchmark01_UGUI.cs"
 "Assets/TextMesh Pro/Examples & Extras/Scripts/Benchmark02.cs"

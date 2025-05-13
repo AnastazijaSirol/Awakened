@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class ButtonCommands : MonoBehaviour
 {
-    // Referenca na button koji se prikazuje/sakriva
+    // Referenca na button koji se prikazuje/sakrivaju
     public Button button1;
 
     // Referenca na button koji aktivira prikaz/sakrivanje
@@ -11,6 +11,9 @@ public class ButtonCommands : MonoBehaviour
 
     // Referenca na skriptu koja se sakriva ako je ova aktivna
     public ButtonMenu otherToggleScript;
+
+    // Referenca na skriptu koja resetira animatore
+    public UIAnimatorResetter animatorResetter;
 
     // Trenutno stanje buttona
     private bool buttonsVisible = false;
@@ -45,13 +48,19 @@ public class ButtonCommands : MonoBehaviour
         // Primjena novog stanja
         SetButtonsActive(buttonsVisible);
 
-        // Zaustavljanje ili pokretanje vremena u igri
+        // Pauziranje ili nastavak igre
         Time.timeScale = buttonsVisible ? 0f : 1f;
 
         // Ako su ovi buttoni aktivirani, prisilno sakrij druge buttone
         if (buttonsVisible && otherToggleScript != null)
         {
             otherToggleScript.ForceHide();
+        }
+
+        // Reset animatora
+        if (animatorResetter != null)
+        {
+            animatorResetter.ResetAllAnimators();
         }
     }
 
@@ -67,5 +76,20 @@ public class ButtonCommands : MonoBehaviour
         buttonsVisible = false;
         SetButtonsActive(false);
         Time.timeScale = 1f;
+
+        // Reset animatora
+        if (animatorResetter != null)
+        {
+            animatorResetter.ResetAllAnimators();
+        }
+    }
+
+    public void Resume()
+    {
+        // Resetiranje svih animatora
+        if (animatorResetter != null)
+        {
+            animatorResetter.ResetAllAnimators();
+        }
     }
 }
