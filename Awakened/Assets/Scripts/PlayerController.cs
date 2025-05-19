@@ -86,7 +86,6 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("MoveSpeed", input.magnitude);
         animator.SetBool("IsRunning", isRunning);
         animator.SetFloat("TurnInput", input.x);
-        Debug.Log("MoveSpeed=" + animator.GetFloat("MoveSpeed") + "  Crouch=" + animator.GetBool("Crouch"));
     }
 
     public void PickupRadio()

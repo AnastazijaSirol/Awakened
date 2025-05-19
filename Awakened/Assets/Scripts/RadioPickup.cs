@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Collider))]
+[RequireComponent(typeof(SphereCollider))]
 public class RadioPickup : MonoBehaviour
 {
     public GameObject radioUIIcon;
@@ -9,7 +9,7 @@ public class RadioPickup : MonoBehaviour
 
     void Start()
     {
-        GetComponent<Collider>().isTrigger = true;
+        GetComponent<SphereCollider>().isTrigger = true;
     }
 
     void OnTriggerEnter(Collider other)
