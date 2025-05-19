@@ -4180,7 +4180,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1971707089}
-  offset: {x: 0, y: 29, z: -15}
+  pivotHeight: 12
+  distanceBehind: 13
+  heightOffset: 0
   smoothSpeed: 0.125
 --- !u!1001 &987379458
 PrefabInstance:
@@ -7047,7 +7049,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkSpeed: 10
-  runSpeed: 20
+  runSpeed: 30
   jumpForce: 8
   gravity: -30
   rotationSpeed: 180
