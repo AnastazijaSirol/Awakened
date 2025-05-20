@@ -5,6 +5,11 @@ public class RadioPickup : MonoBehaviour
 {
     public GameObject radioUIIcon;
     public DoorController door;
+
+    public AudioSource narratorAudio;
+    public NarratorSubtitles subtitles;
+    public GameObject radioVisual;
+
     private bool picked = false;
 
     void Start()
@@ -20,19 +25,22 @@ public class RadioPickup : MonoBehaviour
         {
             picked = true;
 
-            // Animacija pickup-a
+            if (narratorAudio != null)
+                narratorAudio.Play();
+
+            if (subtitles != null)
+                subtitles.StartSubtitles();
+
             var pc = other.GetComponent<PlayerController>();
             if (pc != null) pc.PickupRadio();
 
-            // Inventory
             Inventory.Instance.AddItem(radioUIIcon);
 
-            // Otvaranje vrata
             if (door != null)
                 door.OpenDoor();
 
-            // Uništi radio
-            Destroy(gameObject, 0.1f);
+            if (radioVisual != null)
+                radioVisual.SetActive(false);
         }
     }
 }
