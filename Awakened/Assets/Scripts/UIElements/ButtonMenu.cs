@@ -95,4 +95,5 @@ public class ButtonMenu : MonoBehaviour
         // Nastavak igre
         Time.timeScale = 1f;
     }
+    
 }
