@@ -45,7 +45,7 @@ public class ButtonMenu : MonoBehaviour
     }
 
     // Uključivanje/isključivanje toggle-a
-    private void ToggleButtonsVisibility(bool isOn)
+    public void ToggleButtonsVisibility(bool isOn)
     {
         // Buttoni se prikazuju kada je toggle isključen
         bool showButtons = !isOn;

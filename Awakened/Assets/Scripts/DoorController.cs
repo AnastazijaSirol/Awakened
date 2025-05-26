@@ -21,5 +21,6 @@ public class DoorController : MonoBehaviour
         if (blockingCollider != null)
             blockingCollider.enabled = false;
         isOpen = true;
+        
     }
 }
