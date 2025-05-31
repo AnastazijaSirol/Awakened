@@ -1,8 +1,4 @@
-﻿/*
- *  Author: ariel oliveira [o.arielg@gmail.com]
- */
-
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class HealthBarController : MonoBehaviour
@@ -15,7 +11,6 @@ public class HealthBarController : MonoBehaviour
 
     private void Start()
     {
-        // Should I use lists? Maybe :)
         heartContainers = new GameObject[(int)PlayerStats.Instance.MaxTotalHealth];
         heartFills = new Image[(int)PlayerStats.Instance.MaxTotalHealth];
 

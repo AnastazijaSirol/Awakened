@@ -1,22 +1,23 @@
-﻿/*
- *  Author: ariel oliveira [o.arielg@gmail.com]
- */
-
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
     public delegate void OnHealthChangedDelegate();
     public OnHealthChangedDelegate onHealthChangedCallback;
 
-    #region Sigleton
+    #region Singleton
     private static PlayerStats instance;
     public static PlayerStats Instance
     {
         get
         {
             if (instance == null)
-                instance = FindObjectOfType<PlayerStats>();
+            {
+                // fallback
+                instance = FindFirstObjectByType<PlayerStats>();
+                if (instance == null)
+                    Debug.LogError("PlayerStats not found in the scene!");
+            }
             return instance;
         }
     }
@@ -29,13 +30,27 @@ public class PlayerStats : MonoBehaviour
     [SerializeField]
     private float maxTotalHealth;
 
-    public float Health { get { return health; } }
-    public float MaxHealth { get { return maxHealth; } }
-    public float MaxTotalHealth { get { return maxTotalHealth; } }
+    public float Health => health;
+    public float MaxHealth => maxHealth;
+    public float MaxTotalHealth => maxTotalHealth;
 
-    public void Heal(float health)
+    void Awake()
     {
-        this.health += health;
+        if (instance == null)
+        {
+            instance = this;
+            // DontDestroyOnLoad(gameObject);
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+    }
+
+    public void Heal(float amount)
+    {
+        health += amount;
         ClampHealth();
     }
 
@@ -51,17 +66,13 @@ public class PlayerStats : MonoBehaviour
         {
             maxHealth += 1;
             health = maxHealth;
-
-            if (onHealthChangedCallback != null)
-                onHealthChangedCallback.Invoke();
-        }   
+            onHealthChangedCallback?.Invoke();
+        }
     }
 
-    void ClampHealth()
+    private void ClampHealth()
     {
         health = Mathf.Clamp(health, 0, maxHealth);
-
-        if (onHealthChangedCallback != null)
-            onHealthChangedCallback.Invoke();
+        onHealthChangedCallback?.Invoke();
     }
 }

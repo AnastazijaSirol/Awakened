@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour
 
         // Vertical movement (gravity & jump)
         if (cc.isGrounded && velocity.y < 0f)
-            velocity.y = 0f;              // reset to zero to avoid “pop‑through” 
+            velocity.y = 0f;
         if (jumpRequested && cc.isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
@@ -70,6 +70,8 @@ public class PlayerController : MonoBehaviour
         // Apply movement
         Vector3 move = horizontalMove + Vector3.up * velocity.y;
         cc.Move(move * Time.deltaTime);
+
+        // Rotation
         Vector3 flatMove = new Vector3(horizontalMove.x, 0, horizontalMove.z);
         if (flatMove.magnitude > 0.1f)
         {
@@ -86,6 +88,14 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("MoveSpeed", input.magnitude);
         animator.SetBool("IsRunning", isRunning);
         animator.SetFloat("TurnInput", input.x);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Terminal"))
+        {
+            animator.SetTrigger("PressButton");
+        }
     }
 
     public void PickupRadio()

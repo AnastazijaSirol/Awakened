@@ -4,7 +4,7 @@ using UnityEngine;
 public class RadioPickup : MonoBehaviour
 {
     public GameObject radioUIIcon;
-    public DoorController door;
+    public DoorControllerRadio door;
 
     public AudioSource narratorAudio;
     public NarratorSubtitles subtitles;
