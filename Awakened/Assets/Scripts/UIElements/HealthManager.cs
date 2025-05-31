@@ -12,6 +12,8 @@ public class HealthManager : MonoBehaviour
     public GameObject gameOverText;
     public ButtonMenu buttonMenu;
 
+    public GameObject terminalToHide;
+
     public void LoseLife()
     {
         if (lives <= 0) return;
@@ -30,6 +32,9 @@ public class HealthManager : MonoBehaviour
     {
         if (gameOverText != null)
             gameOverText.SetActive(true);
+
+        if (terminalToHide != null)
+            terminalToHide.SetActive(false);
 
         Invoke("ShowMenuAndRestart", 2f);
     }
