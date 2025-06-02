@@ -42,7 +42,7 @@ public class HealthManager : MonoBehaviour
         }
     }
 
-    private void Die()
+    public void Die()
     {
         isDead = true;
 
