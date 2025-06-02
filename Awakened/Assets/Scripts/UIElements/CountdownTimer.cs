@@ -7,6 +7,7 @@ public class CountdownTimer : MonoBehaviour
     public float countdownDuration = 30f;
     private float timeRemaining;
     private bool isCounting = false;
+    private bool hasStarted = false; 
 
     public TextMeshProUGUI uiText;
     public List<HealthManager> healthManagers = new List<HealthManager>();
@@ -16,15 +17,19 @@ public class CountdownTimer : MonoBehaviour
 
     void OnEnable()
     {
-        if (healthManagers.Count == 0)
+        if (!hasStarted)
         {
-            healthManagers.AddRange(
-                Object.FindObjectsByType<HealthManager>(FindObjectsSortMode.None)
-            );
-        }
+            if (healthManagers.Count == 0)
+            {
+                healthManagers.AddRange(
+                    Object.FindObjectsByType<HealthManager>(FindObjectsSortMode.None)
+                );
+            }
 
-        timeRemaining = countdownDuration;
-        isCounting = true;
+            timeRemaining = countdownDuration;
+            isCounting = true;
+            hasStarted = true;
+        }
     }
 
     void Update()
@@ -60,6 +65,18 @@ public class CountdownTimer : MonoBehaviour
     void UpdateDisplay()
     {
         int seconds = Mathf.CeilToInt(timeRemaining);
-        uiText.text = "Vrijeme: " + seconds.ToString() + "s";
+        if (uiText != null)
+            uiText.text = "Vrijeme: " + seconds.ToString() + "s";
+    }
+
+    public void PauseTimer()
+    {
+        isCounting = false;
+    }
+
+    public void ResumeTimer()
+    {
+        if (timeRemaining > 0)
+            isCounting = true;
     }
 }

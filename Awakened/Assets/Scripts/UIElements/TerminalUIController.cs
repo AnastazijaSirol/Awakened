@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TerminalUIController : MonoBehaviour
 {
-    public GameObject terminalUI;  // UI panel koji će se prikazati
+    public GameObject terminalUI;
 
     public void ShowUI()
     {
