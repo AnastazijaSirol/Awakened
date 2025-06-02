@@ -4,42 +4,65 @@ using UnityEngine.SceneManagement;
 
 public class HealthManager : MonoBehaviour
 {
+    [Header("UI Hearts")]
     public Image[] hearts;
     public Sprite fullHeart;
     public Sprite emptyHeart;
 
-    public int lives = 3;
+    [Header("Game Over UI")]
     public GameObject gameOverText;
     public ButtonMenu buttonMenu;
 
-    public GameObject terminalToHide;
+    [Header("Lives Settings")]
+    public int lives = 3;
+
+    [Header("Animator for Death Animation")]
+    public Animator playerAnimator;
+    public string dieTriggerName = "IsDead";
+
+    private bool isDead = false;
 
     public void LoseLife()
     {
+        if (isDead) return;       // If already dead, no more lives lost
         if (lives <= 0) return;
 
         lives--;
 
-        hearts[lives].sprite = emptyHeart;
+        // Show 1 less heart
+        if (lives >= 0 && lives < hearts.Length)
+        {
+            hearts[lives].sprite = emptyHeart;
+        }
 
+        // If all lives are lost, player dies
         if (lives == 0)
         {
-            GameOver();
+            Die();
         }
     }
 
-    void GameOver()
+    private void Die()
     {
+        isDead = true;
+
+        // Start dying animation
+        if (playerAnimator != null && !string.IsNullOrEmpty(dieTriggerName))
+        {
+            playerAnimator.SetTrigger(dieTriggerName);
+        }
+
+        // Show “Game Over” text
         if (gameOverText != null)
+        {
             gameOverText.SetActive(true);
+        }
 
-        if (terminalToHide != null)
-            terminalToHide.SetActive(false);
-
-        Invoke("ShowMenuAndRestart", 2f);
+        // Restart scene after 2 seconds (or main menu)
+        Invoke(nameof(ShowMenuAndRestart), 2f);
     }
 
-    void ShowMenuAndRestart()
+    private void ShowMenuAndRestart()
     {
         if (gameOverText != null)
             gameOverText.SetActive(false);
@@ -49,6 +72,7 @@ public class HealthManager : MonoBehaviour
             buttonMenu.ToggleButtonsVisibility(false);
         }
 
+        // Restart scene
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
