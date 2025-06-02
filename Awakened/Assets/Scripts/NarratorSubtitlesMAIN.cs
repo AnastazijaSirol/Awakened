@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
@@ -11,7 +11,7 @@ public class NarratorSubtitles : MonoBehaviour
     public class SubtitleLine
     {
         public string text;
-        public float time;      // Kada titl po�inje
+        public float time;      // Kada titl počinje
         public float duration;  // Koliko traje
     }
 
@@ -31,19 +31,19 @@ public class NarratorSubtitles : MonoBehaviour
 
     void Update()
     {
-        if (!subtitlesActive || !narratorAudio.isPlaying)
+        if (!subtitlesActive)
             return;
 
         float t = narratorAudio.time;
 
-        // Ako imamo sljede�i titl i vrijeme je za njega
+        // Prikaži sljedeći titl kad dođe vrijeme
         if (currentIndex + 1 < subtitles.Count && t >= subtitles[currentIndex + 1].time)
         {
             currentIndex++;
             subtitleText.text = subtitles[currentIndex].text;
         }
 
-        // Ako trenutni titl treba nestati
+        // Sakrij titl kad istekne
         if (currentIndex >= 0)
         {
             float endTime = subtitles[currentIndex].time + subtitles[currentIndex].duration;
@@ -53,9 +53,10 @@ public class NarratorSubtitles : MonoBehaviour
             }
         }
 
-        // Kada audio zavr�i, ugasi titlove
+        // Kada audio završi i svi titlovi su prikazani → sakrij tekst i UI
         if (!narratorAudio.isPlaying && currentIndex >= subtitles.Count - 1)
         {
+            subtitleText.text = "";
             subtitleText.gameObject.SetActive(false);
             subtitlesActive = false;
         }
