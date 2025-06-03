@@ -1,9 +1,13 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class HealthManager : MonoBehaviour
 {
+    // Static event that triggers when player loses a life
+    public static event Action OnLifeLost;
+
     [Header("UI Hearts")]
     public Image[] hearts;
     public Sprite fullHeart;
@@ -28,6 +32,9 @@ public class HealthManager : MonoBehaviour
         if (lives <= 0) return;
 
         lives--;
+
+        // Alert subscribers that life is lost
+        OnLifeLost?.Invoke();
 
         // Show 1 less heart
         if (lives >= 0 && lives < hearts.Length)
@@ -58,8 +65,8 @@ public class HealthManager : MonoBehaviour
             gameOverText.SetActive(true);
         }
 
-        // Restart scene after 2 seconds (or main menu)
-        Invoke(nameof(ShowMenuAndRestart), 2f);
+        // Restart scene after 2.5 seconds (or main menu)
+        Invoke(nameof(ShowMenuAndRestart), 2.5f);
     }
 
     private void ShowMenuAndRestart()
