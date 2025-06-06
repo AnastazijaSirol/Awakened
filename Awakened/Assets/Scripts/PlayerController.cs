@@ -11,10 +11,6 @@ public class PlayerController : MonoBehaviour
     public float rotationSpeed = 180f;
     public float inputDeadzone = 0.1f;
 
-    [Header("Crouch Settings")]
-    public float crouchHeight = 1.0f;    // CharacterController height when crouching
-    public float standHeight = 2.0f;     // CharacterController height when standing
-
     private CharacterController cc;
     private Animator animator;
     private InputSystem_Actions controls;
@@ -24,65 +20,39 @@ public class PlayerController : MonoBehaviour
     private bool jumpRequested;
     private Vector3 velocity;
 
-    // Track previous crouch state to apply height adjustment only on toggle
-    private bool wasCrouching = false;
-
     void Awake()
     {
         cc = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
         animator.applyRootMotion = false;
 
-        // Initialize CharacterController to standing dimensions
-        cc.height = standHeight;
-        cc.center = new Vector3(0f, standHeight / 2f, 0f);
-
         controls = new InputSystem_Actions();
-        controls.Player.Move.performed   += ctx => moveInput = ctx.ReadValue<Vector2>();
-        controls.Player.Move.canceled    += ctx => moveInput = Vector2.zero;
+        controls.Player.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
+        controls.Player.Move.canceled += ctx => moveInput = Vector2.zero;
         controls.Player.Sprint.performed += ctx => sprintInput = true;
-        controls.Player.Sprint.canceled  += ctx => sprintInput = false;
+        controls.Player.Sprint.canceled += ctx => sprintInput = false;
         controls.Player.Crouch.performed += ctx => crouchInput = true;
-        controls.Player.Crouch.canceled  += ctx => crouchInput = false;
-        controls.Player.Jump.performed   += ctx => jumpRequested = true;
+        controls.Player.Crouch.canceled += ctx => crouchInput = false;
+        controls.Player.Jump.performed += ctx => jumpRequested = true;
     }
 
-    void OnEnable()  => controls.Enable();
+    void OnEnable() => controls.Enable();
     void OnDisable() => controls.Disable();
 
     void Update()
     {
-        // Deadzone for input
+        // Deadzone
         Vector2 input = moveInput.magnitude < inputDeadzone ? Vector2.zero : moveInput;
 
-        // Handle crouch toggle: adjust height & keep bottom at same Y
-        if (crouchInput != wasCrouching)
-        {
-            // Calculate current bottom Y of CharacterController
-            float oldBottomY = transform.position.y + cc.center.y - (cc.height / 2f);
-
-            // Set new height and center depending on crouch state
-            float targetHeight = crouchInput ? crouchHeight : standHeight;
-            cc.height = targetHeight;
-            cc.center = new Vector3(0f, targetHeight / 2f, 0f);
-
-            // Adjust transform.position.y so bottom stays at oldBottomY
-            transform.position = new Vector3(
-                transform.position.x,
-                oldBottomY,
-                transform.position.z
-            );
-
-            wasCrouching = crouchInput;
-        }
-
-        // Camera orientation on XZ plane
+        // Camera orientation
         Vector3 camF = Camera.main.transform.forward;
-        camF.y = 0f; camF.Normalize();
+        camF.y = 0;
+        camF.Normalize();
         Vector3 camR = Camera.main.transform.right;
-        camR.y = 0f; camR.Normalize();
+        camR.y = 0;
+        camR.Normalize();
 
-        // Horizontal movement (no speed reduction when crouching)
+        // Horizontal movement
         float forward = input.y;
         bool isRunning = sprintInput && forward > 0f;
         float speed = isRunning ? runSpeed : walkSpeed;
@@ -103,8 +73,8 @@ public class PlayerController : MonoBehaviour
         Vector3 move = horizontalMove + Vector3.up * velocity.y;
         cc.Move(move * Time.deltaTime);
 
-        // Rotation toward movement direction
-        Vector3 flatMove = new Vector3(horizontalMove.x, 0f, horizontalMove.z);
+        // Rotation
+        Vector3 flatMove = new Vector3(horizontalMove.x, 0, horizontalMove.z);
         if (flatMove.magnitude > 0.1f)
         {
             Quaternion targetRot = Quaternion.LookRotation(flatMove);
@@ -122,16 +92,17 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("TurnInput", input.x);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Terminal"))
-        {
-            animator.SetTrigger("PressButton");
-        }
-    }
 
     public void PickupRadio()
     {
         animator.SetTrigger("PickRadio");
+    }
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.name == "PowerUp_Sphere")
+        {
+            other.gameObject.SetActive(false);
+        }
     }
 }
