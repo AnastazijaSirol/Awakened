@@ -2,7 +2,7 @@
 using UnityEngine;
 using TMPro;
 
-public class NarratorSubtitles : MonoBehaviour
+public class NarratorSubtitlesMAIN : MonoBehaviour
 {
     public AudioSource narratorAudio;
     public TextMeshProUGUI subtitleText;
@@ -17,7 +17,6 @@ public class NarratorSubtitles : MonoBehaviour
 
     public List<SubtitleLine> subtitles = new List<SubtitleLine>();
     private int currentIndex = -1;
-
     private bool subtitlesActive = false;
 
     public void StartSubtitles()
@@ -25,8 +24,16 @@ public class NarratorSubtitles : MonoBehaviour
         currentIndex = -1;
         subtitlesActive = true;
         narratorAudio.Play();
+
+        // Postavi početni tekst kao prazan i osiguraj da je prikaz uključen
         subtitleText.text = "";
-        subtitleText.gameObject.SetActive(true);
+        subtitleText.fontSize = 28;
+        subtitleText.color = Color.white;
+
+        if (!subtitleText.gameObject.activeInHierarchy)
+            subtitleText.gameObject.SetActive(true);
+
+        Debug.Log("StartSubtitles() pokrenut");
     }
 
     void Update()
@@ -53,12 +60,19 @@ public class NarratorSubtitles : MonoBehaviour
             }
         }
 
-        // Kada audio završi i svi titlovi su prikazani → sakrij tekst i UI
+        // Kada audio završi i svi titlovi su prikazani
         if (!narratorAudio.isPlaying && currentIndex >= subtitles.Count - 1)
         {
             subtitleText.text = "";
-            subtitleText.gameObject.SetActive(false);
             subtitlesActive = false;
+        }
+
+        // TEST: manualni prikaz s tipkom T
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            subtitleText.text = ">>> Manual TEST <<<";
+            subtitleText.gameObject.SetActive(true);
+            Debug.Log("T key pritisnut – prikazujem test titl");
         }
     }
 }

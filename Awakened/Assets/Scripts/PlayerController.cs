@@ -36,8 +36,17 @@ public class PlayerController : MonoBehaviour
         controls.Player.Jump.performed += ctx => jumpRequested = true;
     }
 
-    void OnEnable() => controls.Enable();
-    void OnDisable() => controls.Disable();
+    void OnEnable()
+    {
+        if (controls != null)
+            controls.Enable();
+    }
+
+    void OnDisable()
+    {
+        if (controls != null)
+            controls.Disable();
+    }
 
     void Update()
     {
