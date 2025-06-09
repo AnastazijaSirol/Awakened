@@ -24,16 +24,19 @@ public class HealthManager : MonoBehaviour
     public Animator playerAnimator;
     public string dieTriggerName = "IsDead";
 
+    [Header("Terminal UI")]
+    public GameObject terminal;
+
     private bool isDead = false;
 
     public void LoseLife()
     {
-        if (isDead) return;       // If already dead, no more lives lost
+        if (isDead) return;
         if (lives <= 0) return;
 
         lives--;
 
-        // Alert subscribers that life is lost
+        // Alert that life is lost
         OnLifeLost?.Invoke();
 
         // Show 1 less heart
@@ -57,6 +60,12 @@ public class HealthManager : MonoBehaviour
         if (playerAnimator != null && !string.IsNullOrEmpty(dieTriggerName))
         {
             playerAnimator.SetTrigger(dieTriggerName);
+        }
+
+        // Hide terminal UI if assigned
+        if (terminal != null)
+        {
+            terminal.SetActive(false);
         }
 
         // Show “Game Over” text
