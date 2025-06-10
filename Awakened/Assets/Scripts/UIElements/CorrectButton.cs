@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CorrectButton : MonoBehaviour
 {
@@ -16,11 +17,21 @@ public class CorrectButton : MonoBehaviour
         if (narratorAudio != null && !narratorAudio.isPlaying)
         {
             narratorAudio.Play();
+            narratorAudio.loop = false;
+            Invoke(nameof(ChangeSceneAfterNarration), narratorAudio.clip.length);
         }
 
         if (backstoryNarrator != null)
         {
             backstoryNarrator.StartSubtitles();
+        }
+    }
+
+    private void ChangeSceneAfterNarration()
+    {
+        if (SceneManager.GetActiveScene().name == "SampleScene")
+        {
+            SceneManager.LoadScene("Level2");
         }
     }
 }
