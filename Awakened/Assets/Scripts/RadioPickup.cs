@@ -7,7 +7,7 @@ public class RadioPickup : MonoBehaviour
     public DoorControllerRadio door;
 
     public AudioSource narratorAudio;
-    public NarratorSubtitles subtitles;
+    public NarratorSubtitlesMAIN subtitles;
     public GameObject radioVisual;
 
     private bool picked = false;

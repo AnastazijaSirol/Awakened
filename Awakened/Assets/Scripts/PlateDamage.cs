@@ -1,10 +1,12 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Collider))]
-public class LaserDamage : MonoBehaviour
+public class SensorPlateDamage : MonoBehaviour
 {
+    [Header("Reference to HealthManager")]
     public HealthManager healthManager;
 
+    [Header("Damage Cooldown")]
     public float damageCooldown = 1f;
 
     private bool onCooldown = false;
@@ -17,6 +19,7 @@ public class LaserDamage : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        // If the player steps on sensor plate without cooldown, lose life
         if (onCooldown) return;
 
         if (other.CompareTag("Player"))
@@ -26,13 +29,13 @@ public class LaserDamage : MonoBehaviour
                 healthManager.LoseLife();
             }
 
-            // Start cooldown so player doesn't lose more lives while in laser zone
+            // Start cooldown coroutine
             if (damageCooldown > 0f)
-                StartCoroutine(DamageCooldownCoroutine());
+                StartCoroutine(CooldownCoroutine());
         }
     }
 
-    private System.Collections.IEnumerator DamageCooldownCoroutine()
+    private System.Collections.IEnumerator CooldownCoroutine()
     {
         onCooldown = true;
         yield return new WaitForSeconds(damageCooldown);

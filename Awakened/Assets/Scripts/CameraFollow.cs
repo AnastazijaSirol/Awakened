@@ -19,6 +19,26 @@ public class CameraFollow : MonoBehaviour
     [Header("Smoothing")]
     public float smoothSpeed = 0.125f;
 
+    [Header("Shake Settings")]
+    [Tooltip("Duration in seconds")]
+    public float shakeDuration = 0.5f;
+    [Tooltip("Magnitude")]
+    public float shakeMagnitude = 0.5f;
+
+    // Internal tracker of shaking time
+    private float shakeTimeRemaining = 0f;
+
+    private void OnEnable()
+    {
+        // Subscribe on event when player loses a life
+        HealthManager.OnLifeLost += TriggerShake;
+    }
+
+    private void OnDisable()
+    {
+        HealthManager.OnLifeLost -= TriggerShake;
+    }
+
     void LateUpdate()
     {
         if (target == null) return;
@@ -42,10 +62,27 @@ public class CameraFollow : MonoBehaviour
             desiredPosition = pivotPoint + direction * correctedDistance;
         }
 
-        // Smooth camera moving
-        transform.position = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
+        // Smooth camera moving to desiredPosition
+        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
+
+        // If shaking is active, add random offset
+        if (shakeTimeRemaining > 0f)
+        {
+            Vector3 randomOffset = Random.insideUnitSphere * shakeMagnitude;
+            smoothedPosition += randomOffset;
+            shakeTimeRemaining -= Time.deltaTime;
+        }
+
+        // Set final camera position
+        transform.position = smoothedPosition;
 
         // Look at player
         transform.LookAt(pivotPoint);
+    }
+
+    // Method for triggering camera shake
+    private void TriggerShake()
+    {
+        shakeTimeRemaining = shakeDuration;
     }
 }

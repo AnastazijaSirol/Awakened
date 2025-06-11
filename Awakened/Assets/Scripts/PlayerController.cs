@@ -27,17 +27,26 @@ public class PlayerController : MonoBehaviour
         animator.applyRootMotion = false;
 
         controls = new InputSystem_Actions();
-        controls.Player.Move.performed     += ctx => moveInput = ctx.ReadValue<Vector2>();
-        controls.Player.Move.canceled      += ctx => moveInput = Vector2.zero;
-        controls.Player.Sprint.performed   += ctx => sprintInput = true;
-        controls.Player.Sprint.canceled    += ctx => sprintInput = false;
-        controls.Player.Crouch.performed   += ctx => crouchInput = true;
-        controls.Player.Crouch.canceled    += ctx => crouchInput = false;
-        controls.Player.Jump.performed     += ctx => jumpRequested = true;
+        controls.Player.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
+        controls.Player.Move.canceled += ctx => moveInput = Vector2.zero;
+        controls.Player.Sprint.performed += ctx => sprintInput = true;
+        controls.Player.Sprint.canceled += ctx => sprintInput = false;
+        controls.Player.Crouch.performed += ctx => crouchInput = true;
+        controls.Player.Crouch.canceled += ctx => crouchInput = false;
+        controls.Player.Jump.performed += ctx => jumpRequested = true;
     }
 
-    void OnEnable()  => controls.Enable();
-    void OnDisable() => controls.Disable();
+    void OnEnable()
+    {
+        if (controls != null)
+            controls.Enable();
+    }
+
+    void OnDisable()
+    {
+        if (controls != null)
+            controls.Disable();
+    }
 
     void Update()
     {
@@ -46,9 +55,11 @@ public class PlayerController : MonoBehaviour
 
         // Camera orientation
         Vector3 camF = Camera.main.transform.forward;
-        camF.y = 0; camF.Normalize();
+        camF.y = 0;
+        camF.Normalize();
         Vector3 camR = Camera.main.transform.right;
-        camR.y = 0; camR.Normalize();
+        camR.y = 0;
+        camR.Normalize();
 
         // Horizontal movement
         float forward = input.y;
@@ -83,23 +94,24 @@ public class PlayerController : MonoBehaviour
             );
         }
 
-        // Animations
+        // Update animator parameters
         animator.SetBool("Crouch", crouchInput);
         animator.SetFloat("MoveSpeed", input.magnitude);
         animator.SetBool("IsRunning", isRunning);
         animator.SetFloat("TurnInput", input.x);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Terminal"))
-        {
-            animator.SetTrigger("PressButton");
-        }
-    }
 
     public void PickupRadio()
     {
         animator.SetTrigger("PickRadio");
+    }
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.name == "PowerUp_Sphere")
+        {
+            other.gameObject.SetActive(false);
+        }
     }
 }
