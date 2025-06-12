@@ -66,7 +66,7 @@ public class CountdownTimer : MonoBehaviour
     {
         int seconds = Mathf.CeilToInt(timeRemaining);
         if (uiText != null)
-            uiText.text = "Time: " + seconds.ToString() + "s";
+            uiText.text = "Vrijeme: " + seconds.ToString() + "s";
     }
 
     public void PauseTimer()
