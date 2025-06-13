@@ -13,7 +13,7 @@ public class SensorPlateDamage : MonoBehaviour
 
     private void Awake()
     {
-        Collider col = GetComponent<Collider>();
+        Collider col = GetComponent<BoxCollider>();
         col.isTrigger = true;
     }
 
