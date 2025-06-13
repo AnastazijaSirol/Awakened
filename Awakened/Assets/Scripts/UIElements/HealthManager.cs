@@ -86,7 +86,9 @@ public class HealthManager : MonoBehaviour
 
         if (buttonMenu != null)
         {
-            buttonMenu.ToggleButtonsVisibility(true); 
+            buttonMenu.ToggleButtonsVisibility(false);
         }
+        
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
