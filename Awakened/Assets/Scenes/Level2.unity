@@ -353,6 +353,7 @@ MonoBehaviour:
   fullHeart: {fileID: 21300000, guid: fed24bd82cefc0c4a8ef64dab6231b53, type: 3}
   emptyHeart: {fileID: 21300002, guid: fed24bd82cefc0c4a8ef64dab6231b53, type: 3}
   gameOverText: {fileID: 1649187730}
+  terminalUI: {fileID: 372359894}
   buttonMenu: {fileID: 260791668}
   lives: 3
   playerAnimator: {fileID: 0}
@@ -1603,7 +1604,7 @@ RectTransform:
   - {fileID: 863031790}
   - {fileID: 1907032744}
   - {fileID: 1179080419}
-  - {fileID: 1837216724}
+  - {fileID: 947175574}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -10156,6 +10157,11 @@ Transform:
   - {fileID: 620921589}
   m_Father: {fileID: 2102159795}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!224 &947175574 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3058120960399827877, guid: b7b72bcab1adf884fb5d0e014e6da40a, type: 3}
+  m_PrefabInstance: {fileID: 2284614815995050049}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &949670967
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10555,7 +10561,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b319cb86e52a7844591291b95332af92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  robotIconPrefab: {fileID: 8007117684034123251, guid: b7b72bcab1adf884fb5d0e014e6da40a, type: 3}
+  robotIconPrefab: {fileID: 7965439166329939709, guid: b7b72bcab1adf884fb5d0e014e6da40a, type: 3}
 --- !u!4 &1001087614 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 80b93341bf275fe408b1bd56cb261ce8, type: 3}
@@ -22373,11 +22379,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 10c805e783fd2d64f84bdbb6fae5d25f, type: 3}
---- !u!224 &1837216724 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 1494395833780249457, guid: b7b72bcab1adf884fb5d0e014e6da40a, type: 3}
-  m_PrefabInstance: {fileID: 2284614815995050049}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1850222052
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25297,7 +25298,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemsParent: {fileID: 1538231201}
-  emptySlotPrefab: {fileID: 8007117684034123251, guid: b7b72bcab1adf884fb5d0e014e6da40a, type: 3}
+  emptySlotPrefab: {fileID: 7965439166329939709, guid: b7b72bcab1adf884fb5d0e014e6da40a, type: 3}
 --- !u!4 &2053700837 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 8d199d8824e784743af821727659334b, type: 3}
@@ -26881,6 +26882,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1494395833780249457, guid: b7b72bcab1adf884fb5d0e014e6da40a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7965439166329939709, guid: b7b72bcab1adf884fb5d0e014e6da40a, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8007117684034123251, guid: b7b72bcab1adf884fb5d0e014e6da40a, type: 3}

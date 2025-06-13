@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class HealthManager : MonoBehaviour
 {
-    // Static event that triggers when player loses a life
     public static event Action OnLifeLost;
 
     [Header("UI Hearts")]
@@ -15,6 +14,7 @@ public class HealthManager : MonoBehaviour
 
     [Header("Game Over UI")]
     public GameObject gameOverText;
+    public GameObject terminalUI; // Referenca na terminal UI
     public ButtonMenu buttonMenu;
 
     [Header("Lives Settings")]
@@ -26,23 +26,28 @@ public class HealthManager : MonoBehaviour
 
     private bool isDead = false;
 
+    void Start()
+    {
+        // Inicijalno sakrij Game Over tekst
+        if (gameOverText != null)
+            gameOverText.SetActive(false);
+    }
+
     public void LoseLife()
     {
-        if (isDead) return;       // If already dead, no more lives lost
+        if (isDead) return;
         if (lives <= 0) return;
 
         lives--;
-
-        // Alert subscribers that life is lost
         OnLifeLost?.Invoke();
 
-        // Show 1 less heart
+        // Ažuriraj srca
         if (lives >= 0 && lives < hearts.Length)
         {
             hearts[lives].sprite = emptyHeart;
         }
 
-        // If all lives are lost, player dies
+        // Kada potroši sva srca
         if (lives == 0)
         {
             Die();
@@ -53,19 +58,24 @@ public class HealthManager : MonoBehaviour
     {
         isDead = true;
 
-        // Start dying animation
+        // Pokreni animaciju smrti
         if (playerAnimator != null && !string.IsNullOrEmpty(dieTriggerName))
         {
             playerAnimator.SetTrigger(dieTriggerName);
         }
 
-        // Show “Game Over” text
+        // Sakrij terminal
+        if (terminalUI != null)
+        {
+            terminalUI.SetActive(false);
+        }
+
+        // Prikaži Game Over tekst
         if (gameOverText != null)
         {
             gameOverText.SetActive(true);
         }
-
-        // Restart scene after 2.5 seconds (or main menu)
+        
         Invoke(nameof(ShowMenuAndRestart), 2.5f);
     }
 
@@ -76,10 +86,7 @@ public class HealthManager : MonoBehaviour
 
         if (buttonMenu != null)
         {
-            buttonMenu.ToggleButtonsVisibility(false);
+            buttonMenu.ToggleButtonsVisibility(true); 
         }
-
-        // Restart scene
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
