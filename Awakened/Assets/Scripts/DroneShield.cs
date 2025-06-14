@@ -9,9 +9,10 @@ public class DroneShield : MonoBehaviour
     private Coroutine shieldCoroutine;
 
     [Header("Display Settings")]
-    public int fontSize = 10;
-    public Color startColor = Color.cyan;
-    public Color endColor = Color.red;
+    public int fontSize = 15; // Slightly larger for better visibility
+    public Color startColor = new Color(0.2f, 1f, 1f); // Brighter cyan
+    public Color endColor = new Color(1f, 0.2f, 0.2f); // Brighter red
+    public float textDistance = 1.5f; // Distance from camera
 
     private void Start()
     {
@@ -30,8 +31,8 @@ public class DroneShield : MonoBehaviour
     {
         GameObject textObj = new GameObject("CountdownText");
         
-        // Postavi tekst ispred kamere
-        textObj.transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 1f));
+        // Position text in front of camera
+        textObj.transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, textDistance));
         
         countdownTextMesh = textObj.AddComponent<TextMesh>();
         countdownTextMesh.anchor = TextAnchor.MiddleCenter;
@@ -39,10 +40,12 @@ public class DroneShield : MonoBehaviour
         countdownTextMesh.fontSize = fontSize;
         countdownTextMesh.color = startColor;
         countdownTextMesh.text = "";
+        countdownTextMesh.characterSize = 0.15f; // Better scaling
         
-        // Podešavanja za bolju vidljivost
+        // Improve visibility
         MeshRenderer renderer = textObj.GetComponent<MeshRenderer>();
         renderer.sharedMaterial = countdownTextMesh.font.material;
+        renderer.sharedMaterial.color = startColor; // Ensure material uses correct color
         renderer.sortingOrder = 1000;
         
         textObj.SetActive(false);
@@ -71,9 +74,13 @@ public class DroneShield : MonoBehaviour
             countdownTextMesh.text = Mathf.CeilToInt(timer).ToString();
             countdownTextMesh.color = Color.Lerp(endColor, startColor, timer/duration);
             
-            // Osiguraj da je tekst uvijek na sredini ekrana
-            countdownTextMesh.transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 1f));
+            // Ensure text stays centered and faces camera
+            countdownTextMesh.transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, textDistance));
             countdownTextMesh.transform.rotation = Camera.main.transform.rotation;
+            
+            // Simple pulsing effect for better visibility
+            float pulseScale = 1f + Mathf.Sin(Time.time * 8f) * 0.1f;
+            countdownTextMesh.transform.localScale = Vector3.one * pulseScale;
             
             yield return null;
         }
