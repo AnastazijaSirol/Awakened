@@ -24,7 +24,7 @@ public class HealthManager : MonoBehaviour
     public Animator playerAnimator;
     public string dieTriggerName = "IsDead";
 
-    private bool isDead = false;
+    public bool isDead = false;
 
     void Start()
     {

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 4668d3839f087744a9a62a46e9c6d75f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - shieldMaterial: {fileID: 2100000, guid: a77a59f737727cf40a0312c60186b5e5, type: 2}
+  - activateSound: {instanceID: 0}
+  - deactivateSound: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
