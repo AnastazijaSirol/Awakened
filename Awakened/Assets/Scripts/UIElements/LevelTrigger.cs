@@ -1,5 +1,5 @@
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
 public class LevelTrigger : MonoBehaviour
 {
@@ -7,25 +7,17 @@ public class LevelTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && levelText != null)
         {
-            if (levelText != null)
-            {
-                levelText.text = "1. level";
-                levelText.gameObject.SetActive(true);
-            }
+            levelText.gameObject.SetActive(true); 
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && levelText != null)
         {
-            if (levelText != null)
-            {
-                levelText.gameObject.SetActive(false);
-            }
+            levelText.gameObject.SetActive(false); 
         }
     }
-
 }
