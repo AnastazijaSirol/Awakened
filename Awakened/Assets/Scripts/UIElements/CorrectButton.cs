@@ -33,5 +33,9 @@ public class CorrectButton : MonoBehaviour
         {
             SceneManager.LoadScene("Level2");
         }
+        else if (SceneManager.GetActiveScene().name == "Level2")
+        {
+            SceneManager.LoadScene("Level3");
+        }
     }
 }
