@@ -20,7 +20,6 @@ public class DoorController : MonoBehaviour
     void Awake()
     {
         animator = GetComponent<Animator>();
-
         Collider col = GetComponent<Collider>();
         col.isTrigger = true;
     }
@@ -51,12 +50,6 @@ public class DoorController : MonoBehaviour
         // Look for the part as a child of this door GameObject
         Transform partTransform = transform.Find(partName);
         if (partTransform != null)
-        {
             Destroy(partTransform.gameObject);
-        }
-        else
-        {
-            Debug.LogWarning($"Door part '{partName}' not found under '{gameObject.name}'.");
-        }
     }
 }
