@@ -29,9 +29,18 @@ public class ShotBehavior : MonoBehaviour
         // Always destroy shot on collision
         if (other.CompareTag("Player"))
         {
+            // Check if player has active shield
+            DroneShield droneShield = other.GetComponent<DroneShield>();
+            if (droneShield != null && droneShield.IsShieldActive)
+            {
+                // Shield is active - block the shot without dealing damage
+                Destroy(gameObject);
+                return;
+            }
+
             if (damageEnabled)
             {
-                // Only deal damage if enabled
+                // Only deal damage if enabled and shield is not active
                 other.GetComponent<HealthManager>()?.LoseLife();
             }
             Destroy(gameObject);
