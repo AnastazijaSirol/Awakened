@@ -4,8 +4,14 @@ using UnityEngine.SceneManagement;
 public class CorrectButton : MonoBehaviour
 {
     public GameObject terminalToHide;
-    public NarratorSubtitlesMAIN backstoryNarrator;
-    public AudioSource narratorAudio;
+
+    // Level 1 naracija
+    public NarratorSubtitlesMAIN level1Narrator;
+    public AudioSource level1NarratorAudio;
+
+    // Level 2 naracija
+    public narratorSubtitles2 level2Narrator;
+    public AudioSource level2NarratorAudio;
 
     public void OnCorrectButtonClick()
     {
@@ -14,26 +20,37 @@ public class CorrectButton : MonoBehaviour
             terminalToHide.SetActive(false);
         }
 
-        if (narratorAudio != null && !narratorAudio.isPlaying)
-        {
-            narratorAudio.Play();
-            narratorAudio.loop = false;
-            Invoke(nameof(ChangeSceneAfterNarration), narratorAudio.clip.length);
-        }
+        string currentScene = SceneManager.GetActiveScene().name;
 
-        if (backstoryNarrator != null)
+        if (currentScene == "SampleScene" && level1NarratorAudio != null && !level1NarratorAudio.isPlaying)
         {
-            backstoryNarrator.StartSubtitles();
+            level1NarratorAudio.Play();
+            level1NarratorAudio.loop = false;
+            Invoke(nameof(ChangeSceneAfterNarration), level1NarratorAudio.clip.length);
+
+            if (level1Narrator != null)
+                level1Narrator.StartSubtitles();
+        }
+        else if (currentScene == "Level2" && level2NarratorAudio != null && !level2NarratorAudio.isPlaying)
+        {
+            level2NarratorAudio.Play();
+            level2NarratorAudio.loop = false;
+            Invoke(nameof(ChangeSceneAfterNarration), level2NarratorAudio.clip.length);
+
+            if (level2Narrator != null)
+                level2Narrator.StartNarration();
         }
     }
 
     private void ChangeSceneAfterNarration()
     {
-        if (SceneManager.GetActiveScene().name == "SampleScene")
+        string currentScene = SceneManager.GetActiveScene().name;
+
+        if (currentScene == "SampleScene")
         {
             SceneManager.LoadScene("Level2");
         }
-        else if (SceneManager.GetActiveScene().name == "Level2")
+        else if (currentScene == "Level2")
         {
             SceneManager.LoadScene("Level3");
         }
