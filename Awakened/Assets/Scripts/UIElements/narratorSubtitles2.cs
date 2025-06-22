@@ -7,6 +7,10 @@ public class narratorSubtitles2 : MonoBehaviour
     public AudioSource narratorAudio;
     public TextMeshProUGUI subtitleText;
 
+    [Header("Hologram opcionalno")]
+    public bool isHologramNarrator = false;
+    public GameObject hologramObject;
+
     [System.Serializable]
     public class SubtitleLine
     {
@@ -27,6 +31,9 @@ public class narratorSubtitles2 : MonoBehaviour
         narratorAudio.Play();
         active = true;
         currentIndex = -1;
+
+        if (isHologramNarrator && hologramObject != null)
+            hologramObject.SetActive(true);
     }
 
     void Update()
@@ -52,6 +59,9 @@ public class narratorSubtitles2 : MonoBehaviour
         {
             subtitleText.text = "";
             active = false;
+
+            if (isHologramNarrator && hologramObject != null)
+                hologramObject.SetActive(false);
         }
     }
 }
