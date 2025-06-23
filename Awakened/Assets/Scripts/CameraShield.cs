@@ -29,7 +29,7 @@ public class CameraShield : MonoBehaviour
     public GameObject robotPrefab;
     public float robotHeightOffset = 1.5f;
     public float robotAnimationDuration = 0.5f;
-    public float robotScaleMultiplier = 1.2f;
+    public float robotScaleMultiplier = 1.1f;
 
     private GameObject robotInstance;
     private Vector3 originalRobotScale;
@@ -51,8 +51,9 @@ public class CameraShield : MonoBehaviour
         if (robotPrefab != null)
         {
             robotInstance = Instantiate(robotPrefab, transform);
-            robotInstance.transform.localPosition = new Vector3(0f, -0.3f, 1.5f);
-            originalRobotScale = robotInstance.transform.localScale;
+            robotInstance.transform.localPosition = new Vector3(0f, -0.6f, 2.0f); // niže i ispred lika
+            originalRobotScale = robotInstance.transform.localScale * 0.3f; // manji pas
+            robotInstance.transform.localScale = originalRobotScale;
             robotInstance.SetActive(false);
         }
         else
@@ -66,7 +67,6 @@ public class CameraShield : MonoBehaviour
         IsShieldActive = true;
         countdownTextMesh.gameObject.SetActive(true);
 
-        // Show robot and play animation
         if (robotInstance != null)
         {
             robotInstance.SetActive(true);
@@ -75,24 +75,23 @@ public class CameraShield : MonoBehaviour
 
         float duration = 3f;
         float timer = duration;
-        
+
         while (timer > 0f)
         {
             timer -= Time.deltaTime;
-            
+
             countdownTextMesh.text = $"{Mathf.CeilToInt(timer)}\nShields: {shieldsRemaining}/3";
-            countdownTextMesh.color = Color.Lerp(endColor, startColor, timer/duration);
-            
+            countdownTextMesh.color = Color.Lerp(endColor, startColor, timer / duration);
+
             countdownTextMesh.transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, textDistance));
             countdownTextMesh.transform.rotation = Camera.main.transform.rotation;
-            
+
             float pulseScale = 1f + Mathf.Sin(Time.time * 8f) * 0.1f;
             countdownTextMesh.transform.localScale = Vector3.one * pulseScale;
-            
+
             yield return null;
         }
 
-        // Hide robot
         if (robotInstance != null)
         {
             robotInstance.SetActive(false);
@@ -111,7 +110,6 @@ public class CameraShield : MonoBehaviour
 
     private IEnumerator PlayRobotAnimation()
     {
-        // Scale up animation
         float timer = 0f;
         while (timer < robotAnimationDuration)
         {
@@ -121,7 +119,6 @@ public class CameraShield : MonoBehaviour
             yield return null;
         }
 
-        // Scale down animation
         timer = 0f;
         while (timer < robotAnimationDuration)
         {
@@ -131,7 +128,6 @@ public class CameraShield : MonoBehaviour
             yield return null;
         }
 
-        // Reset to original scale
         robotInstance.transform.localScale = originalRobotScale;
     }
 
@@ -160,7 +156,7 @@ public class CameraShield : MonoBehaviour
     {
         GameObject textObj = new GameObject("LimitText");
         textObj.transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.4f, textDistance));
-        
+
         limitTextMesh = textObj.AddComponent<TextMesh>();
         limitTextMesh.anchor = TextAnchor.MiddleCenter;
         limitTextMesh.alignment = TextAlignment.Center;
@@ -168,11 +164,11 @@ public class CameraShield : MonoBehaviour
         limitTextMesh.color = Color.yellow;
         limitTextMesh.text = "";
         limitTextMesh.characterSize = 0.15f;
-        
+
         MeshRenderer renderer = textObj.GetComponent<MeshRenderer>();
         renderer.sharedMaterial = limitTextMesh.font.material;
         renderer.sortingOrder = 1000;
-        
+
         textObj.SetActive(false);
     }
 
@@ -180,7 +176,7 @@ public class CameraShield : MonoBehaviour
     {
         GameObject textObj = new GameObject("CooldownText");
         textObj.transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.3f, textDistance));
-        
+
         cooldownTextMesh = textObj.AddComponent<TextMesh>();
         cooldownTextMesh.anchor = TextAnchor.MiddleCenter;
         cooldownTextMesh.alignment = TextAlignment.Center;
@@ -188,11 +184,11 @@ public class CameraShield : MonoBehaviour
         cooldownTextMesh.color = Color.white;
         cooldownTextMesh.text = "";
         cooldownTextMesh.characterSize = 0.15f;
-        
+
         MeshRenderer renderer = textObj.GetComponent<MeshRenderer>();
         renderer.sharedMaterial = cooldownTextMesh.font.material;
         renderer.sortingOrder = 1000;
-        
+
         textObj.SetActive(false);
     }
 
@@ -229,12 +225,12 @@ public class CameraShield : MonoBehaviour
         limitTextMesh.color = Color.red;
         limitTextMesh.gameObject.SetActive(true);
         limitTextMesh.fontStyle = FontStyle.Bold;
-        
+
         limitTextMesh.transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.4f, textDistance));
         limitTextMesh.transform.rotation = Camera.main.transform.rotation;
 
         yield return new WaitForSeconds(3f);
-        
+
         limitTextMesh.text = "";
         limitTextMesh.gameObject.SetActive(false);
         limitTextMesh.fontStyle = FontStyle.Normal;
@@ -253,7 +249,7 @@ public class CameraShield : MonoBehaviour
     private IEnumerator CooldownRoutine()
     {
         isOnCooldown = true;
-        
+
         while (remainingCooldown > 0f)
         {
             remainingCooldown -= Time.deltaTime;
@@ -268,12 +264,12 @@ public class CameraShield : MonoBehaviour
     {
         limitTextMesh.text = limitMessage;
         limitTextMesh.gameObject.SetActive(true);
-        
+
         limitTextMesh.transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.4f, textDistance));
         limitTextMesh.transform.rotation = Camera.main.transform.rotation;
 
         yield return new WaitForSeconds(2f);
-        
+
         limitTextMesh.text = "";
         limitTextMesh.gameObject.SetActive(false);
     }
@@ -282,12 +278,12 @@ public class CameraShield : MonoBehaviour
     {
         cooldownTextMesh.text = string.Format(cooldownMessage, Mathf.CeilToInt(remainingCooldown));
         cooldownTextMesh.gameObject.SetActive(true);
-        
+
         cooldownTextMesh.transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.3f, textDistance));
         cooldownTextMesh.transform.rotation = Camera.main.transform.rotation;
 
         yield return new WaitForSeconds(2f);
-        
+
         cooldownTextMesh.text = "";
         cooldownTextMesh.gameObject.SetActive(false);
     }
@@ -303,7 +299,7 @@ public class CameraShield : MonoBehaviour
     public void ResetShields()
     {
         if (shieldsPermanentlyDepleted) return;
-        
+
         shieldsRemaining = 3;
         isOnCooldown = false;
         if (cooldownCoroutine != null)
