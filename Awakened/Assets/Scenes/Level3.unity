@@ -4805,7 +4805,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41aed91f1d116ce418f148b77c6ae4e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countdownDuration: 30
+  countdownDuration: 60
   uiText: {fileID: 213633074}
   healthManagers:
   - {fileID: 1761350944}

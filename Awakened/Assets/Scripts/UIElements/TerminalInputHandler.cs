@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class TerminalInputHandler : MonoBehaviour
 {
-    public TMP_InputField inputField; // ili InputField ako ne koristiš TextMeshPro
+    public TMP_InputField inputField;
     public GameObject terminalToHide;
     
     public NarratorSubtitlesMAIN level1Narrator;
@@ -72,16 +72,14 @@ public class TerminalInputHandler : MonoBehaviour
                 audioSource.PlayOneShot(wrongAnswerSound);
             }
 
-            // Smanji život kao u WrongButton skripti
             HealthManager[] managers = Object.FindObjectsByType<HealthManager>(FindObjectsSortMode.None);
             foreach (var manager in managers)
             {
                 manager.LoseLife();
             }
 
-            // Clear input field
             inputField.text = "";
-            inputField.ActivateInputField(); // fokus natrag na polje
+            inputField.ActivateInputField();
         }
     }
 
