@@ -4,9 +4,9 @@ public class CameraLightSetup : MonoBehaviour
 {
     [Header("Light Settings")]
     public float lightAngle = 60f;            // Realističan kut svjetla
-    public float lightRange = 20f;            // Pristojan domet
-    public float lightIntensity = 12f;        // Jako, ali ne previše
-    public float lightYOffset = -0.5f;        // Malo ispod kamere
+    public float lightRange = 70;            // Pristojan domet
+    public float lightIntensity = 50f;        // Jako, ali ne previše
+    public float lightYOffset = -1f;        // Malo ispod kamere
 
     [Header("Detection Collider Settings")]
     public float triggerRadius = 3.5f;        // Preciznija detekcija

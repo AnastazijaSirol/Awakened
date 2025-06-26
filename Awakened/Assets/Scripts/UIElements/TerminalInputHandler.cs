@@ -7,12 +7,14 @@ public class TerminalInputHandler : MonoBehaviour
 {
     public TMP_InputField inputField;
     public GameObject terminalToHide;
-    
+
     public NarratorSubtitlesMAIN level1Narrator;
     public AudioSource level1NarratorAudio;
 
     public narratorSubtitles2 level2Narrator;
     public AudioSource level2NarratorAudio;
+
+    public GameObject finalChoicePanel; // UI panel s završnim pitanjem
 
     public AudioClip wrongAnswerSound;
     private AudioSource audioSource;
@@ -29,6 +31,9 @@ public class TerminalInputHandler : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
             audioSource = gameObject.AddComponent<AudioSource>();
+
+        if (finalChoicePanel != null)
+            finalChoicePanel.SetActive(false); // osiguraj da je skriveno na početku
     }
 
     private void HandleInputSubmit(string userInput)
@@ -63,6 +68,12 @@ public class TerminalInputHandler : MonoBehaviour
                 Invoke(nameof(ChangeSceneAfterNarration), level2NarratorAudio.clip.length);
 
                 level2Narrator?.StartNarration();
+            }
+            else if (currentScene == "Level3")
+            {
+                // Finalna scena — pokaži završno pitanje
+                if (finalChoicePanel != null)
+                    finalChoicePanel.SetActive(true);
             }
         }
         else
