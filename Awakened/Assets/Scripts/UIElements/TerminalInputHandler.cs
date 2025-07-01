@@ -14,6 +14,9 @@ public class TerminalInputHandler : MonoBehaviour
     public narratorSubtitles2 level2Narrator;
     public AudioSource level2NarratorAudio;
 
+    public narratorSubtitles2 level3Narrator;  // NOVO za Level 3
+    public AudioSource level3NarratorAudio;    // NOVO za Level 3
+
     public GameObject finalChoicePanel; // UI panel s završnim pitanjem
 
     public AudioClip wrongAnswerSound;
@@ -69,11 +72,13 @@ public class TerminalInputHandler : MonoBehaviour
 
                 level2Narrator?.StartNarration();
             }
-            else if (currentScene == "Level3")
+            else if (currentScene == "Level3" && level3NarratorAudio != null && !level3NarratorAudio.isPlaying)
             {
-                // Finalna scena — pokaži završno pitanje
-                if (finalChoicePanel != null)
-                    finalChoicePanel.SetActive(true);
+                level3NarratorAudio.Play();
+                level3NarratorAudio.loop = false;
+                Invoke(nameof(ShowFinalChoicePanel), level3NarratorAudio.clip.length);
+
+                level3Narrator?.StartNarration();
             }
         }
         else
@@ -105,6 +110,14 @@ public class TerminalInputHandler : MonoBehaviour
         else if (currentScene == "Level2")
         {
             SceneManager.LoadScene("Level3");
+        }
+    }
+
+    private void ShowFinalChoicePanel()
+    {
+        if (finalChoicePanel != null)
+        {
+            finalChoicePanel.SetActive(true);
         }
     }
 }
